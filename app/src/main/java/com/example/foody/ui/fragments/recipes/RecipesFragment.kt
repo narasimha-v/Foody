@@ -16,10 +16,12 @@ import com.example.foody.viewModels.MainViewModel
 import com.example.foody.R
 import com.example.foody.adapters.RecipesAdapter
 import com.example.foody.databinding.FragmentRecipesBinding
+import com.example.foody.util.NetworkListener
 import com.example.foody.util.NetworkResult
 import com.example.foody.util.observeOnce
 import com.example.foody.viewModels.RecipesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -32,6 +34,7 @@ class RecipesFragment : Fragment() {
     private val mAdapter by lazy { RecipesAdapter() }
     private lateinit var mainViewModel: MainViewModel
     private lateinit var recipesViewModel: RecipesViewModel
+    private lateinit var networkListener: NetworkListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +53,28 @@ class RecipesFragment : Fragment() {
         binding.mainViewModel = mainViewModel
 
         setupRecyclerView()
-        readDatabase()
+
+        recipesViewModel.readBackOnline.observe(viewLifecycleOwner) { status ->
+            recipesViewModel.backOnline = status
+        }
+
+        lifecycleScope.launch {
+            networkListener = NetworkListener()
+            networkListener
+                .checkNetworkAvailability(requireContext())
+                .collect { status ->
+                    Log.d("NetworkListener", status.toString())
+                    recipesViewModel.networkStatus = status
+                    recipesViewModel.showNetworkStatus()
+                    readDatabase()
+                }
+        }
 
         binding.recipesFab.setOnClickListener {
+            if (!recipesViewModel.networkStatus) {
+                recipesViewModel.showNetworkStatus()
+                return@setOnClickListener
+            }
             findNavController().navigate(
                 R.id.action_recipesFragment_to_recipesBottomSheet
             )
