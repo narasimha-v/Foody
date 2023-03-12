@@ -18,6 +18,10 @@
         android:theme="@style/Theme.Foody"
         tools:targetApi="31">
         <activity
+            android:name=".ui.DetailsActivity"
+            android:label="Details"
+            android:theme="@style/DetailsActivityStyle" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -30,6 +34,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
