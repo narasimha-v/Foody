@@ -47,7 +47,6 @@ class RecipesAdapter : RecyclerView.Adapter<RecipesAdapter.MyViewHolder>() {
         holder.bind(currentRecipe)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setData(newData: FoodRecipe) {
         val recipesDiffUtil = RecipesDiffUtil(
             recipes,

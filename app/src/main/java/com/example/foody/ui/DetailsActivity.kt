@@ -28,13 +28,13 @@ class DetailsActivity : AppCompatActivity() {
 
         val fragments = ArrayList<Fragment>()
         fragments.add(OverviewFragment())
-        fragments.add(InstructionsFragment())
         fragments.add(IngredientsFragment())
+        fragments.add(InstructionsFragment())
 
         val titles = ArrayList<String>()
         titles.add("Overview")
-        titles.add("Instructions")
         titles.add("Ingredients")
+        titles.add("Instructions")
 
         val resultBundle = Bundle()
         resultBundle.putParcelable("recipeBundle", args.result)

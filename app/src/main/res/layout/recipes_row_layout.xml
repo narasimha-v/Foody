@@ -26,10 +26,8 @@
             app:cardCornerRadius="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
             app:strokeColor="@color/lightMediumGray"
             app:strokeWidth="1dp">
 
@@ -64,7 +62,6 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/recipeImageView"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Title" />
@@ -91,10 +88,8 @@
                     android:layout_marginBottom="36dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/heartTextView"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/heartTextView"
                     app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
-                    app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/ic_heart"
                     app:tint="@color/red" />
 
@@ -114,7 +109,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="@+id/clockTextView"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/clockTextView"
                     app:layout_constraintTop_toTopOf="@+id/heartImageView"
                     app:srcCompat="@drawable/ic_clock"
