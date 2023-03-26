@@ -6,7 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.lifecycle.*
 import com.example.foody.data.Repository
-import com.example.foody.data.database.RecipesEntity
+import com.example.foody.data.database.entities.FavouritesEntity
+import com.example.foody.data.database.entities.RecipesEntity
 import com.example.foody.models.FoodRecipe
 import com.example.foody.util.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,12 +24,30 @@ class MainViewModel @Inject constructor
 ) : AndroidViewModel(application) {
 
     /* ROOM DATABASE */
-    val readRecipes: LiveData<List<RecipesEntity>> = repository.local.readDatabase().asLiveData()
+    val readRecipes: LiveData<List<RecipesEntity>> = repository.local.readRecipes().asLiveData()
+    val readFavoriteRecipes: LiveData<List<FavouritesEntity>> =
+        repository.local.readFavoriteRecipes().asLiveData()
 
     private fun insertRecipes(recipesEntity: RecipesEntity) = viewModelScope.launch(
         Dispatchers.IO
     ) {
         repository.local.insertRecipes(recipesEntity)
+    }
+
+    fun insertFavoriteRecipe(favoritesEntity: FavouritesEntity) = viewModelScope.launch(
+        Dispatchers.IO
+    ) {
+        repository.local.insertFavoriteRecipe(favoritesEntity)
+    }
+
+    fun deleteFavoriteRecipe(favoritesEntity: FavouritesEntity) = viewModelScope.launch(
+        Dispatchers.IO
+    ) {
+        repository.local.deleteFavoriteRecipe(favoritesEntity)
+    }
+
+    fun deleteAllFavoriteRecipes() = viewModelScope.launch(Dispatchers.IO) {
+        repository.local.deleteAllFavoriteRecipes()
     }
 
     /* RETROFIT */
