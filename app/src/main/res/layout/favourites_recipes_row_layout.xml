@@ -6,13 +6,12 @@
     <data>
 
         <variable
-            name="result"
-            type="com.example.foody.models.Result" />
+            name="favouritesEntity"
+            type="com.example.foody.data.database.entities.FavouritesEntity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/recipesRowLayout"
-        onRecipeClickListener="@{result}"
+        android:id="@+id/favouriteRecipesRowLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -20,7 +19,7 @@
         tools:ignore="ContentDescription">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/rowCardView"
+            android:id="@+id/favouriteRowCardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12dp"
@@ -37,8 +36,8 @@
                 android:background="@color/white">
 
                 <ImageView
-                    android:id="@+id/recipeImageView"
-                    loadImageFromUrl="@{result.image}"
+                    android:id="@+id/favouriteRecipeImageView"
+                    loadImageFromUrl="@{favouritesEntity.result.image}"
                     android:layout_width="200dp"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
@@ -48,7 +47,7 @@
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/titleTextView"
+                    android:id="@+id/favouriteTitleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -57,96 +56,96 @@
                     android:ellipsize="end"
                     android:fontFamily="@font/courgette"
                     android:maxLines="2"
-                    android:text="@{result.title}"
+                    android:text="@{favouritesEntity.result.title}"
                     android:textColor="@color/darker"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/recipeImageView"
+                    app:layout_constraintStart_toEndOf="@+id/favouriteRecipeImageView"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Title" />
 
                 <TextView
-                    android:id="@+id/descriptionTextView"
-                    parseHtml="@{result.summary}"
+                    android:id="@+id/favouriteDescriptionTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:ellipsize="end"
                     android:maxLines="3"
+                    android:text="@{favouritesEntity.result.summary}"
                     android:textColor="@color/darkGray"
-                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
-                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+                    app:layout_constraintEnd_toEndOf="@+id/favouriteTitleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/favouriteTitleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/favouriteTitleTextView"
                     tools:text="Our knowledge engineers spent years crafting our complex food ontology, which allows us to understand the relationships between ingredients, recipes, nutrition, allergens, and more." />
 
                 <ImageView
-                    android:id="@+id/heartImageView"
+                    android:id="@+id/favouriteHeartImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="36dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/heartTextView"
-                    app:layout_constraintStart_toStartOf="@+id/heartTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+                    app:layout_constraintEnd_toEndOf="@+id/favouriteHeartTextView"
+                    app:layout_constraintStart_toStartOf="@+id/favouriteHeartTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/favouriteDescriptionTextView"
                     app:srcCompat="@drawable/ic_heart"
                     app:tint="@color/red" />
 
                 <TextView
-                    android:id="@+id/heartTextView"
-                    setNumberOfLikes="@{result.aggregateLikes}"
+                    android:id="@+id/favouriteHeartTextView"
+                    setNumberOfLikes="@{favouritesEntity.result.aggregateLikes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textColor="@color/red"
-                    app:layout_constraintStart_toStartOf="@+id/descriptionTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/heartImageView"
+                    app:layout_constraintStart_toStartOf="@+id/favouriteDescriptionTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/favouriteHeartImageView"
                     tools:text="100" />
 
                 <ImageView
-                    android:id="@+id/clockImageView"
+                    android:id="@+id/favouriteClockImageView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/clockTextView"
-                    app:layout_constraintStart_toStartOf="@+id/clockTextView"
-                    app:layout_constraintTop_toTopOf="@+id/heartImageView"
+                    app:layout_constraintEnd_toEndOf="@+id/favouriteClockTextView"
+                    app:layout_constraintStart_toStartOf="@+id/favouriteClockTextView"
+                    app:layout_constraintTop_toTopOf="@+id/favouriteHeartImageView"
                     app:srcCompat="@drawable/ic_clock"
                     app:tint="@color/yellow" />
 
                 <TextView
-                    android:id="@+id/clockTextView"
-                    setNumberOfMinutes="@{result.readyInMinutes}"
+                    android:id="@+id/favouriteClockTextView"
+                    setNumberOfMinutes="@{favouritesEntity.result.readyInMinutes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:textAlignment="center"
                     android:textColor="@color/yellow"
-                    app:layout_constraintStart_toEndOf="@+id/heartTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/clockImageView"
+                    app:layout_constraintStart_toEndOf="@+id/favouriteHeartTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/favouriteClockImageView"
                     tools:text="10" />
 
                 <ImageView
-                    android:id="@+id/veganImageView"
-                    applyVeganColor="@{result.vegan}"
+                    android:id="@+id/favouriteVeganImageView"
+                    applyVeganColor="@{favouritesEntity.result.vegan}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="@+id/veganTextView"
-                    app:layout_constraintStart_toStartOf="@+id/veganTextView"
-                    app:layout_constraintTop_toTopOf="@+id/clockImageView"
+                    app:layout_constraintEnd_toEndOf="@+id/favouriteVeganTextView"
+                    app:layout_constraintStart_toStartOf="@+id/favouriteVeganTextView"
+                    app:layout_constraintTop_toTopOf="@+id/favouriteClockImageView"
                     app:srcCompat="@drawable/ic_vegan"
                     tools:tint="@color/green" />
 
                 <TextView
-                    android:id="@+id/veganTextView"
-                    applyVeganColor="@{result.vegan}"
+                    android:id="@+id/favouriteVeganTextView"
+                    applyVeganColor="@{favouritesEntity.result.vegan}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:text="Vegan"
                     android:textAlignment="center"
-                    app:layout_constraintStart_toEndOf="@+id/clockTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/veganImageView"
+                    app:layout_constraintStart_toEndOf="@+id/favouriteClockTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/favouriteVeganImageView"
                     tools:ignore="HardcodedText"
                     tools:text="Vegan"
                     tools:textColor="@color/green" />

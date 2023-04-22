@@ -75,7 +75,7 @@
         app:tint="@color/white" />
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/favouriteTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -96,8 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:src="@drawable/ic_check_mark"
-        app:layout_constraintStart_toStartOf="@+id/titleTextView"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintStart_toStartOf="@+id/favouriteTitleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/favouriteTitleTextView"
         app:tint="@color/darkGray" />
 
     <TextView
