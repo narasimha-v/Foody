@@ -12,4 +12,6 @@
     <string name="healthy">Healthy</string>
     <string name="cheap">Cheap</string>
     <string name="save_to_favourites">Save to favourites</string>
+    <string name="delete_favourite_menu">Delete Favourite Menu</string>
+    <string name="delete_all">Delete All</string>
 </resources>
