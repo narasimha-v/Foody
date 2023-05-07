@@ -22,11 +22,6 @@ Room , Offline Caching and many more.
 - Access the recipe using offline caching without internt connection
 - Random Food Jokes to share it with your friends
 
-# Screenshots
-
-## Light Mode
-<p> <img src="./Screenshots/light.png" > </p>
-
 ## Requirements 🎯
 - Android 5.0 and Above
 - Min sdk version 21
