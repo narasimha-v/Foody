@@ -29,7 +29,7 @@ class OverviewFragment : Fragment() {
         val myBundle: Result? = args?.getParcelable(RECIPE_RESULT)
 
         view.mainImageView.load(myBundle?.image)
-        view.favouriteTitleTextView.text = myBundle?.title
+        view.titleTextView.text = myBundle?.title
         view.likesTextView.text = myBundle?.aggregateLikes.toString()
         view.timeTextView.text = myBundle?.readyInMinutes.toString()
         myBundle?.summary.let {

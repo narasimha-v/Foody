@@ -27,13 +27,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:strokeColor="@color/lightMediumGray"
+            app:strokeColor="@color/strokeColor"
             app:strokeWidth="1dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white">
+                android:background="@color/cardBackgroundColor">
 
                 <ImageView
                     android:id="@+id/favouriteRecipeImageView"
@@ -47,7 +47,7 @@
                     tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
-                    android:id="@+id/favouriteTitleTextView"
+                    android:id="@+id/titleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -57,7 +57,7 @@
                     android:fontFamily="@font/courgette"
                     android:maxLines="2"
                     android:text="@{favouritesEntity.result.title}"
-                    android:textColor="@color/darker"
+                    android:textColor="@color/titleColor"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -73,10 +73,10 @@
                     android:layout_marginTop="12dp"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:textColor="@color/darkGray"
-                    app:layout_constraintEnd_toEndOf="@+id/favouriteTitleTextView"
-                    app:layout_constraintStart_toStartOf="@+id/favouriteTitleTextView"
-                    app:layout_constraintTop_toBottomOf="@+id/favouriteTitleTextView"
+                    android:textColor="@color/descriptionColor"
+                    app:layout_constraintEnd_toEndOf="@+id/titleTextView"
+                    app:layout_constraintStart_toStartOf="@+id/titleTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/titleTextView"
                     tools:text="Our knowledge engineers spent years crafting our complex food ontology, which allows us to understand the relationships between ingredients, recipes, nutrition, allergens, and more." />
 
                 <ImageView
