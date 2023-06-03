@@ -7,10 +7,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.foody.R
 import com.example.foody.adapters.FavouriteRecipesAdapter
 import com.example.foody.databinding.FragmentFavouriteRecipesBinding
 import com.example.foody.viewModels.MainViewModel
@@ -43,7 +47,21 @@ class FavouriteRecipesFragment : Fragment() {
         binding.mainViewModel = mainViewModel
         binding.mAdapter = mAdapter
 
-        setHasOptionsMenu(true)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.favourite_recipes_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.deleteAllFavouriteRecipesMenu) {
+                    mainViewModel.deleteAllFavoriteRecipes()
+                    showSnackBar()
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
 
         setupRecyclerView(binding.favouriteRecipesRecyclerView)
 
@@ -55,27 +73,6 @@ class FavouriteRecipesFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        mAdapter.clearContextualActionMode()
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(com.example.foody.R.menu.favourite_recipes_menu, menu)
-        return super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == com.example.foody.R.id.deleteAllFavouriteRecipesMenu) {
-            mainViewModel.deleteAllFavoriteRecipes()
-        }
-        showSnackBar()
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun showSnackBar() {
         Snackbar.make(
             binding.root,
@@ -83,5 +80,11 @@ class FavouriteRecipesFragment : Fragment() {
             Snackbar.LENGTH_SHORT
         ).setAction("Okay") {}
             .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        mAdapter.clearContextualActionMode()
     }
 }

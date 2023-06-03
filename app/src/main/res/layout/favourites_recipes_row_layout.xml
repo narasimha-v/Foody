@@ -94,9 +94,9 @@
 
                 <TextView
                     android:id="@+id/favouriteHeartTextView"
-                    setNumberOfLikes="@{favouritesEntity.result.aggregateLikes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(favouritesEntity.result.aggregateLikes)}"
                     android:textAlignment="center"
                     android:textColor="@color/red"
                     app:layout_constraintStart_toStartOf="@+id/favouriteDescriptionTextView"
@@ -115,10 +115,10 @@
 
                 <TextView
                     android:id="@+id/favouriteClockTextView"
-                    setNumberOfMinutes="@{favouritesEntity.result.readyInMinutes}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
+                    android:text="@{String.valueOf(favouritesEntity.result.readyInMinutes)}"
                     android:textAlignment="center"
                     android:textColor="@color/yellow"
                     app:layout_constraintStart_toEndOf="@+id/favouriteHeartTextView"

@@ -10,8 +10,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.example.foody.R
 import com.example.foody.databinding.FragmentFoodJokeBinding
@@ -42,7 +45,25 @@ class FoodJokeFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
 
-        setHasOptionsMenu(true)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.food_joke_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                if (menuItem.itemId == R.id.shareFoodJokeMenu) {
+                    val shareIntent = Intent().apply {
+                        this.action = Intent.ACTION_SEND
+                        this.putExtra(Intent.EXTRA_TEXT, foodJoke)
+                        this.type = "text/plain"
+                    }
+                    startActivity(shareIntent)
+                }
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
 
         mainViewModel.getFoodJoke(API_KEY)
         mainViewModel.foodJokeResponse.observe(viewLifecycleOwner) { response ->
@@ -80,32 +101,6 @@ class FoodJokeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    @Deprecated(
-        "Deprecated in Java", ReplaceWith(
-            "inflater.inflate(R.menu.food_joke_menu, menu)",
-            "com.example.foody.R"
-        )
-    )
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.food_joke_menu, menu)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.shareFoodJokeMenu) {
-            val shareIntent = Intent().apply {
-                this.action = Intent.ACTION_SEND
-                this.putExtra(
-                    Intent.EXTRA_TEXT,
-                    foodJoke
-                )
-                this.type = "text/plain"
-            }
-            startActivity(shareIntent)
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

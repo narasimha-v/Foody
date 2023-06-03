@@ -10,53 +10,55 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import coil.load
 import com.example.foody.R
+import com.example.foody.bindingAdapters.RecipesRowBinding
+import com.example.foody.databinding.FragmentOverviewBinding
 import com.example.foody.models.Result
 import com.example.foody.util.Constants.Companion.RECIPE_RESULT
-import kotlinx.android.synthetic.main.fragment_overview.view.*
 import org.jsoup.Jsoup
 
 class OverviewFragment : Fragment() {
+    private var _binding: FragmentOverviewBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(
-            R.layout.fragment_overview, container, false
+    ): View {
+        _binding = FragmentOverviewBinding.inflate(
+            inflater, container, false
         )
 
+
         val args = arguments
-        val myBundle: Result? = args?.getParcelable(RECIPE_RESULT)
+        val myBundle: Result = args!!.getParcelable<Result>(RECIPE_RESULT) as Result
 
-        view.mainImageView.load(myBundle?.image)
-        view.titleTextView.text = myBundle?.title
-        view.likesTextView.text = myBundle?.aggregateLikes.toString()
-        view.timeTextView.text = myBundle?.readyInMinutes.toString()
-        myBundle?.summary.let {
-            val summary = Jsoup.parse(it).text()
-            view.summaryTextView.text = summary
-        }
+        binding.mainImageView.load(myBundle.image)
+        binding.titleTextView.text = myBundle.title
+        binding.likesTextView.text = myBundle.aggregateLikes.toString()
+        binding.timeTextView.text = myBundle.readyInMinutes.toString()
 
-        if (myBundle?.vegetarian == true) {
-            setDishInfo(view.vegetarianImageView, view.vegetarianTextView)
+        RecipesRowBinding.parseHtml(binding.summaryTextView, myBundle.summary)
+
+        if (myBundle.vegetarian) {
+            setDishInfo(binding.vegetarianImageView, binding.vegetarianTextView)
         }
-        if (myBundle?.vegan == true) {
-            setDishInfo(view.veganImageView, view.veganTextView)
+        if (myBundle.vegan) {
+            setDishInfo(binding.veganImageView, binding.veganTextView)
         }
-        if (myBundle?.glutenFree == true) {
-            setDishInfo(view.glutenFreeImageView, view.glutenFreeTextView)
+        if (myBundle.glutenFree) {
+            setDishInfo(binding.glutenFreeImageView, binding.glutenFreeTextView)
         }
-        if (myBundle?.dairyFree == true) {
-            setDishInfo(view.dairyFreeImageView, view.dairyFreeTextView)
+        if (myBundle.dairyFree) {
+            setDishInfo(binding.dairyFreeImageView, binding.dairyFreeTextView)
         }
-        if (myBundle?.veryHealthy == true) {
-            setDishInfo(view.healthyImageView, view.healthyTextView)
+        if (myBundle.veryHealthy) {
+            setDishInfo(binding.healthyImageView, binding.healthyTextView)
         }
-        if (myBundle?.cheap == true) {
-            setDishInfo(view.cheapImageView, view.cheapTextView)
+        if (myBundle.cheap) {
+            setDishInfo(binding.cheapImageView, binding.cheapTextView)
         }
 
-        return view
+        return binding.root
     }
 
     private fun setDishInfo(imageView: ImageView, textView: TextView) {
@@ -74,4 +76,8 @@ class OverviewFragment : Fragment() {
         )
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

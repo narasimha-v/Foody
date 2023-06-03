@@ -5,7 +5,10 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -50,7 +53,21 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         binding.lifecycleOwner = this
         binding.mainViewModel = mainViewModel
 
-        setHasOptionsMenu(true)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.recipes_menu, menu)
+
+                val search = menu.findItem(R.id.menuSearch)
+                val searchView = search.actionView as? SearchView
+                searchView?.isSubmitButtonEnabled = true
+                searchView?.setOnQueryTextListener(this@RecipesFragment)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
         setupRecyclerView()
 
@@ -58,7 +75,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
             recipesViewModel.backOnline = status
         }
 
-        lifecycleScope.launch {
+        lifecycleScope.launchWhenStarted {
             networkListener = NetworkListener()
             networkListener
                 .checkNetworkAvailability(requireContext())
@@ -87,21 +104,6 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         binding.shimmerRecyclerView.adapter = mAdapter
         binding.shimmerRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         showShimmerEffect()
-    }
-
-    @Deprecated(
-        "Deprecated in Java", ReplaceWith(
-            "super.onCreateOptionsMenu(menu, inflater)",
-            "androidx.fragment.app.Fragment"
-        )
-    )
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.recipes_menu, menu)
-        val search = menu.findItem(R.id.menuSearch)
-        val searchView = search.actionView as? SearchView
-        searchView?.isSubmitButtonEnabled = true
-        searchView?.setOnQueryTextListener(this)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -142,7 +144,9 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                     response.data?.let {
                         mAdapter.setData(it)
                     }
+                    recipesViewModel.saveMealAndDietType()
                 }
+
                 is NetworkResult.Error -> {
                     Log.i("response from server", response.toString())
                     hideShimmerEffect()
@@ -153,6 +157,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
                 is NetworkResult.Loading -> {
                     showShimmerEffect()
                 }
@@ -174,6 +179,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                         mAdapter.setData(it)
                     }
                 }
+
                 is NetworkResult.Error -> {
                     Log.i("response from server", response.toString())
                     hideShimmerEffect()
@@ -184,6 +190,7 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
                 is NetworkResult.Loading -> {
                     showShimmerEffect()
                 }
@@ -209,8 +216,8 @@ class RecipesFragment : Fragment(), SearchView.OnQueryTextListener {
         binding.shimmerRecyclerView.hideShimmer()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         _binding = null
     }
 }

@@ -18,8 +18,6 @@ import com.example.foody.ui.fragments.favourites.FavouriteRecipesFragmentDirecti
 import com.example.foody.util.RecipesDiffUtil
 import com.example.foody.viewModels.MainViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.favourites_recipes_row_layout.view.favouriteRecipesRowLayout
-import kotlinx.android.synthetic.main.favourites_recipes_row_layout.view.favouriteRowCardView
 
 class FavouriteRecipesAdapter(
     private val requireActivity: FragmentActivity,
@@ -38,7 +36,7 @@ class FavouriteRecipesAdapter(
     private var favouriteRecipes = emptyList<FavouritesEntity>()
 
     class MyViewHolder(
-        private val binding: FavouritesRecipesRowLayoutBinding
+        val binding: FavouritesRecipesRowLayoutBinding
     ) : RecyclerView.ViewHolder(
         binding.root
     ) {
@@ -67,11 +65,14 @@ class FavouriteRecipesAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         myViewHolders.add(holder)
         rootView = holder.itemView.rootView
+
         val currentRecipe = favouriteRecipes[position]
         holder.bind(currentRecipe)
 
+        saveItemStateOnScroll(currentRecipe, holder)
+
         // Single click listener
-        holder.itemView.favouriteRecipesRowLayout.setOnClickListener {
+        holder.binding.favouriteRecipesRowLayout.setOnClickListener {
             if (multiSelection) {
                 applySelection(holder, currentRecipe)
             } else {
@@ -84,16 +85,31 @@ class FavouriteRecipesAdapter(
         }
 
         // Long click listener
-        holder.itemView.favouriteRecipesRowLayout.setOnLongClickListener {
+        holder.binding.favouriteRecipesRowLayout.setOnLongClickListener {
             if (!multiSelection) {
                 multiSelection = true
                 requireActivity.startActionMode(this)
                 applySelection(holder, currentRecipe)
                 true
             } else {
-                multiSelection = false
-                false
+                applySelection(holder, currentRecipe)
+                true
             }
+        }
+    }
+
+    private fun saveItemStateOnScroll(
+        currentRecipe: FavouritesEntity,
+        holder: FavouriteRecipesAdapter.MyViewHolder
+    ) {
+        if (selectedRecipes.contains(currentRecipe)) {
+            changeRecipeStyle(
+                holder, R.color.cardBackgroundLightColor, R.color.colorPrimary
+            )
+        } else {
+            changeRecipeStyle(
+                holder, R.color.cardBackgroundColor, R.color.strokeColor
+            )
         }
     }
 
@@ -121,13 +137,13 @@ class FavouriteRecipesAdapter(
         cardBackgroundColor: Int,
         strokeColor: Int
     ) {
-        holder.itemView.favouriteRecipesRowLayout.setBackgroundColor(
+        holder.binding.favouriteRecipesRowLayout.setBackgroundColor(
             ContextCompat.getColor(
                 requireActivity,
                 cardBackgroundColor
             )
         )
-        holder.itemView.favouriteRowCardView.strokeColor =
+        holder.binding.favouriteRowCardView.strokeColor =
             ContextCompat.getColor(
                 requireActivity,
                 strokeColor
@@ -138,6 +154,7 @@ class FavouriteRecipesAdapter(
         when (selectedRecipes.size) {
             0 -> {
                 mActionMode.finish()
+                multiSelection = false
             }
 
             1 -> {
